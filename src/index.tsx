@@ -7,6 +7,7 @@
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import * as marked from 'marked';
 import * as $ from 'jquery';
 
 // BBFetch 初始化参数结构
@@ -14,6 +15,12 @@ interface BBFetchConfig {
     id: string;     // dom 元素的 id
     src: string;    // 资源路径
     type: string;   // 资源类型
+}
+
+interface Callback {
+    (err: any, value: any): any;
+    (err: any): any;
+    (): any;
 }
 
 class BBFetch {
@@ -26,22 +33,25 @@ class BBFetch {
         this.id = config.id;
         this.src = config.src;
         this.type = config.type;
-        this.source = this._getSource();
     }
 
     /**
-     * 通过 iframe 获取相应的资源
+     * 只能获取公开的资源（不带cookie的get请求）
      */
-    private _getSource (): string {
-        const iframe: string = `
-            <iframe
-                id='${ this.id }'
-                style='display:none'
-                src='${ this.src }'
-            />
-        `;
-        $(iframe).appendTo('body');
-        return '';
+    private _getSource (callback: Callback): void {
+        $.ajax({
+            type: 'GET',
+            url: this.src,
+            crossDomain: true,
+            success: (data, state) => {
+                this.source = data;
+                return callback();
+            },
+            error: (err, state) => {
+                this.source = '';
+                return callback(err);
+            }
+        });
     }
 
     /**
@@ -54,5 +64,11 @@ class BBFetch {
      */
     public getMarkedValue () {}
 }
+
+const bbfetch: BBFetch = new BBFetch({
+    id: 'try',
+    src: 'https://raw.githubusercontent.com/wujohns/learn-ts/master/readme.md',
+    type: 'md'
+});
 
 // markdown 转换后 html 的显示采用 react 的 dangerouslySetInnerHTML 特性实现

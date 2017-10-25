@@ -23,6 +23,7 @@ const baseLibsPackConfig = {
         { src: 'react-dom', expose: 'react-dom' },
         { src: 'marked', expose: 'marked' },
         { src: 'jquery', expose: 'jquery' },
+        { src: 'highlight.js', expose: 'highlight.js' },
         { src: './src/antd.js', expose: 'antd' }
     ],
     savePath: './dist/base_libs.js'
