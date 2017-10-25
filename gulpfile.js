@@ -21,6 +21,8 @@ const baseLibsPackConfig = {
         { src: 'async', expose: 'async' },
         { src: 'react', expose: 'react' },
         { src: 'react-dom', expose: 'react-dom' },
+        { src: 'marked', expose: 'marked' },
+        { src: 'jquery', expose: 'jquery' },
         { src: './src/antd.js', expose: 'antd' }
     ],
     savePath: './dist/base_libs.js'

@@ -29,11 +29,20 @@ const packageConfig = {
         '@types/async': '^2.0.44',
         '@types/react': '^16.0.18',
         '@types/react-dom': '^16.0.2',
-        '@types/antd': '^1.0.0',
         'lodash': '^4.17.4',
         'async': '^2.5.0',
         'react': '^16.0.0',
         'react-dom': '^16.0.0',
+        
+        // 额外包
+        '@types/marked': '^0.3.0',
+        '@types/highlight.js': '^9.1.10',
+        '@types/jquery': '^3.2.15',
+        'marked': '^0.3.6',
+        'highlight.js': '^9.12.0',
+        'jquery': '^3.2.1',
+
+        // antd
         'antd': '^2.12.0'
     },
 
