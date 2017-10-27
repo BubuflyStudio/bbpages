@@ -44,8 +44,11 @@ class BBConfig {
         }
         const lessCacheDir = path.join(config.cacheDir, 'less');
         const lessRule = {
-            test: /\.less$/,
-            include: [path.resolve(process.cwd(), 'node_modules/antd')],
+            test: /\.(less|css)$/,
+            include: [
+                path.resolve(process.cwd(), 'node_modules/antd'),
+                path.resolve(process.cwd(), 'src/md_styles')
+            ],
             use: ExtractTextPlugin.extract({
                 fallback: 'style-loader',
                 use: [
@@ -146,6 +149,9 @@ class BBConfig {
         const webpackConfig = {
             module: {
                 rules: [tsRule, lessRule]
+            },
+            resolve: {
+                extensions: ['.ts', '.tsx', '.js']
             },
             plugins: plugins
         };

@@ -24,7 +24,8 @@ const baseLibsPackConfig = {
         { src: 'marked', expose: 'marked' },
         { src: 'jquery', expose: 'jquery' },
         { src: 'highlight.js', expose: 'highlight.js' },
-        { src: './src/antd.js', expose: 'antd' }
+        { src: './src/antd.js', expose: 'antd' },
+        { src: './src/md_styles', expose: 'md-styles' }
     ],
     savePath: './dist/base_libs.js'
 };
