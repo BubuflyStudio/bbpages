@@ -5,6 +5,7 @@
  * @date 17/10/26
  */
 
+import * as _ from 'lodash';
 import * as $ from 'jquery';
 
 interface Callback {
@@ -14,6 +15,7 @@ interface Callback {
 interface UtilsType {
     getSource: (src: string, callback: Callback) => void;
     isFullUrl: (url: string) => boolean;
+    getFullUrl: (rootUrl: string, path: string) => string;
 };
 
 const Utils: UtilsType = {
@@ -32,10 +34,15 @@ const Utils: UtilsType = {
     },
 
     isFullUrl: (url) => {
-        return true;
+        return /^(http:\/\/|https:\/\/)/.test(url);
     },
 
-    
+    getFullUrl: (rootUrl, path) => {
+        if (/^\//.test(path)) {
+            return `${ rootUrl }${ path }`;
+        }
+        return `${ rootUrl }/${ path }`;
+    }
 };
 
 export default Utils;

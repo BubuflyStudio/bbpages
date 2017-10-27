@@ -38,18 +38,30 @@ class MDFetch {
         this.srcLink = config.srcLink;
 
         // 自定义 link 的解析
-        const rootUrl = config.rootUrl;
+        let rootUrl = config.rootUrl;
+        if (/\/$/.test(rootUrl)) {
+            rootUrl = rootUrl.substr(0, rootUrl.length - 1);
+        }
         this.renderer.link = function (href: string, title: string, text: string) {
             let resultHref = href;
-            if (rootUrl) {
-                
+            if (rootUrl && !Utils.isFullUrl(href)) {
+                // 如果根路径设定存在，且使用的连接不是完整url
+                resultHref = Utils.getFullUrl(rootUrl, href);
             }
-            return '';
+            const titleConfig = title ? `title="${ title }"` : '';
+            // TODO 调整
+            return `<a href="${ resultHref }" ${ titleConfig }>${ text }</a>`;
         };
 
         // 自定义 image 的解析
         this.renderer.image = function (href: string, title: string, text: string) {
-            return '';
+            let imgSrc = href;
+            if (rootUrl && !Utils.isFullUrl(href)) {
+                // 如果根路径设定存在，且使用的连接不是完整url
+                imgSrc = Utils.getFullUrl(rootUrl, href);
+            }
+            const titleConfig = title ? `title="${ title }"` : '';
+            return `<img src="${ imgSrc }" alt="${ text }" ${titleConfig} />`;
         }
     }
 

@@ -16,7 +16,8 @@ import * as highlight from 'highlight.js';
 import { default as MDFetch } from './fetch_md';
 
 const mdFetch: MDFetch = new MDFetch({
-    srcLink: 'https://raw.githubusercontent.com/wujohns/graphql-learn/master/docs/1.graphql%E5%9F%BA%E7%A1%80%E6%9F%A5%E8%AF%A2.md'
+    srcLink: 'https://raw.githubusercontent.com/wujohns/graphql-learn/master/readme.md',
+    rootUrl: 'https://raw.githubusercontent.com/wujohns/graphql-learn/master/'
 });
 mdFetch.getMarkedValue((err, content) => {
     $('#content').html(content);
