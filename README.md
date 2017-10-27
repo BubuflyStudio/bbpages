@@ -30,4 +30,4 @@ const config = {
 };
 ```
 
-[test](www.hahha.com)
+[test](/www.hahha.com)
