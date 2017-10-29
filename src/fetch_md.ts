@@ -27,6 +27,7 @@ interface Callback {
 interface MDFetchConfig {
     srcLink: string;    // 资源路径
     rootUrl?: string;    // 根路径
+    siteLinkMap: object; // 站内链接 map
 };
 
 class MDFetch {
@@ -44,13 +45,13 @@ class MDFetch {
         }
         this.renderer.link = function (href: string, title: string, text: string) {
             let resultHref = href;
-            if (rootUrl && !Utils.isFullUrl(href)) {
-                // 如果根路径设定存在，且使用的连接不是完整url
-                resultHref = Utils.getFullUrl(rootUrl, href);
+            if (Utils.isFullUrl(href)) {
+                // 如果连接跳转为完整链接则直接跳转
+                const titleConfig = title ? `title="${ title }"` : '';
+                return `<a href="${ resultHref }" ${ titleConfig }>${ text }</a>`
+            } else if () {
+                // TODO 需要支持站内跳转（网页内跳转与github工程页跳转）
             }
-            const titleConfig = title ? `title="${ title }"` : '';
-            // TODO 调整
-            return `<a href="${ resultHref }" ${ titleConfig }>${ text }</a>`;
         };
 
         // 自定义 image 的解析
@@ -58,7 +59,7 @@ class MDFetch {
             let imgSrc = href;
             if (rootUrl && !Utils.isFullUrl(href)) {
                 // 如果根路径设定存在，且使用的连接不是完整url
-                imgSrc = Utils.getFullUrl(rootUrl, href);
+                imgSrc = Utils.getImageUrl(rootUrl, href);
             }
             const titleConfig = title ? `title="${ title }"` : '';
             return `<img src="${ imgSrc }" alt="${ text }" ${titleConfig} />`;

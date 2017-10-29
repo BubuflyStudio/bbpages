@@ -15,7 +15,7 @@ interface Callback {
 interface UtilsType {
     getSource: (src: string, callback: Callback) => void;
     isFullUrl: (url: string) => boolean;
-    getFullUrl: (rootUrl: string, path: string) => string;
+    getImageUrl: (rootUrl: string, path: string) => string;
 };
 
 const Utils: UtilsType = {
@@ -37,7 +37,7 @@ const Utils: UtilsType = {
         return /^(http:\/\/|https:\/\/)/.test(url);
     },
 
-    getFullUrl: (rootUrl, path) => {
+    getImageUrl: (rootUrl, path) => {
         if (/^\//.test(path)) {
             return `${ rootUrl }${ path }`;
         }
