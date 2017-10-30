@@ -13,7 +13,45 @@ import * as marked from 'marked';
 import * as $ from 'jquery';
 import * as highlight from 'highlight.js';
 
+import { Layout, Menu, Breadcrumb } from 'antd';
+const { Header, Content, Footer, Sider } = Layout;
+const SubMenu = Menu.SubMenu;
+
 import { default as MDFetch } from './fetch_md';
+
+const bookConfig = {
+    type: 'github',
+    username: 'wujohns',
+    project: 'graphql-learn',
+    branch: 'master',
+    list: [
+        {
+            title: '简介',
+            path: 'readme.md',
+        },
+        {
+            title: '基础部分',
+            list: [
+                {
+                    title: 'graphql base1',
+                    path: 'docs/base1.md'
+                },
+                {
+                    title: 'graphql base2',
+                    path: 'docs/base2.md'
+                },
+                {
+                    title: 'graphql base3',
+                    path: 'docs/base3.md'
+                }
+            ]
+        }
+    ]
+};
+
+class SiderDemo extends React.Component {
+    state = {}
+}
 
 const mdFetch: MDFetch = new MDFetch({
     srcLink: 'https://raw.githubusercontent.com/wujohns/graphql-learn/master/readme.md',

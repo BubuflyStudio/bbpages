@@ -27,7 +27,6 @@ interface Callback {
 interface MDFetchConfig {
     srcLink: string;    // 资源路径
     rootUrl?: string;    // 根路径
-    siteLinkMap: object; // 站内链接 map
 };
 
 class MDFetch {
@@ -45,12 +44,12 @@ class MDFetch {
         }
         this.renderer.link = function (href: string, title: string, text: string) {
             let resultHref = href;
+            const titleConfig = title ? `title="${ title }"` : '';
             if (Utils.isFullUrl(href)) {
                 // 如果连接跳转为完整链接则直接跳转
-                const titleConfig = title ? `title="${ title }"` : '';
                 return `<a href="${ resultHref }" ${ titleConfig }>${ text }</a>`
-            } else if () {
-                // TODO 需要支持站内跳转（网页内跳转与github工程页跳转）
+            } else {
+                return `<a href="#${ resultHref }" ${ titleConfig }>${ text }</a>`
             }
         };
 

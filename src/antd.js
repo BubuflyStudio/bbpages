@@ -6,9 +6,15 @@
  */
 'use strict';
 
-import Button from 'antd/lib/button';
-import 'antd/lib/button/style';
+import Layout from 'antd/lib/layout';
+import 'antd/lib/layout/style';
+
+import Menu from 'antd/lib/menu';
+import 'antd/lib/menu/style';
+
+import Breadcrumb from 'antd/lib/breadcrumb';
+import 'antd/lib/breadcrumb/style';
 
 export default {
-    Button
-}
+    Layout, Menu, Breadcrumb
+};
