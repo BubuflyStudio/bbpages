@@ -15,7 +15,7 @@ interface Callback {
 interface UtilsType {
     getSource: (src: string, callback: Callback) => void;
     isFullUrl: (url: string) => boolean;
-    getImageUrl: (rootUrl: string, path: string) => string;
+    getFullUrl: (rootUrl: string, path: string) => string;
 };
 
 const Utils: UtilsType = {
@@ -53,7 +53,7 @@ const Utils: UtilsType = {
      * @param {String} path - 路径
      * @return {String} - 拼接后的路径
      */
-    getImageUrl: (rootUrl, path) => {
+    getFullUrl: (rootUrl, path) => {
         if (/^\//.test(path)) {
             return `${ rootUrl }${ path }`;
         }

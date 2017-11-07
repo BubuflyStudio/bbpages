@@ -58,7 +58,7 @@ class MDFetch {
             let imgSrc = href;
             if (rootUrl && !Utils.isFullUrl(href)) {
                 // 如果根路径设定存在，且使用的连接不是完整url
-                imgSrc = Utils.getImageUrl(rootUrl, href);
+                imgSrc = Utils.getFullUrl(rootUrl, href);
             }
             const titleConfig = title ? `title="${ title }"` : '';
             return `<img src="${ imgSrc }" alt="${ text }" ${titleConfig} />`;

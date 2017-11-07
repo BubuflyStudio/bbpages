@@ -18,6 +18,7 @@ const { Header, Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
 import { default as MDFetch } from './fetch_md';
+import { default as Page } from './page';
 
 const bookConfig = {
     type: 'github',
