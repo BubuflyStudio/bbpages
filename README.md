@@ -6,6 +6,7 @@
 ## 使用指南
 
 TODO markdown 的自定义解析
+TODO highlight.js 占用体积过大，需要调整
 
 ## json 设计
 ```js
