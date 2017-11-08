@@ -22,12 +22,24 @@ class Page extends React.Component {
     private branch: string;
     private username: string;
     private project: string;
-    private list: [any];
+    private list: any;
+
     private menuMap: any;
     private pathMap: any;
+    private urlMap: any;
+    private itemClick: (params: any) => void;
+    private subMenuClick: (params: any) => void;
 
     private rootUrl: string;
-    state = {};
+    private keyConfig: any = {
+        openKeys: [''],
+        activeKey: ''
+    };
+    state = {
+        openKeys: [''],
+        activeKey: '',
+        content: ''
+    };
 
     constructor (props: any) {
         super(props);
@@ -39,8 +51,21 @@ class Page extends React.Component {
 
         this.rootUrl = this.getRootUrl();
         this.initMenuMap();
+        this.addClickHandle();
     }
 
+    componentDidMount () {
+        this.setState(this.keyConfig, () => {
+            this.getContent();
+        });
+    }
+
+    // 将必要参数暴露到全局
+    private initGlobal () {
+        // TODO 比较痛苦的部分
+    }
+
+    // 按照配置获取基础根路径
     private getRootUrl ():string {
         let rootUrl = '';
         switch (this.type) {
@@ -53,57 +78,116 @@ class Page extends React.Component {
         return rootUrl;
     }
 
-    private initMenuMap ():void {
-        this.menuMap = {};
+    // 初始化目录菜单配置
+    private initMenuMap ():any {
+        this.menuMap = [];
         this.pathMap = {};
+        this.urlMap = {};
         let key = 0;
-        const addItem = (item) => {
-            let url = item.rawUrl;
-            if (!url) {
-                this.pathMap[item.path] = key;
-                url = Utils.getFullUrl(this.rootUrl, item.path);
-            }
-            this.menuMap[key] = {
-                title: _.get(item, 'title', ''),
-                url: url
-            };
-        };
+        let openKey:any = null;
+        let activeKey:any = null;
         _.forEach(this.list, (item) => {
             key++;
             if (_.isEmpty(item.list)) {
                 let url = item.rawUrl;
                 if (!url) {
-                    this.pathMap[item.path] = key;
+                    this.pathMap[item.path] = {
+                        active: `${ key }`
+                    };
                     url = Utils.getFullUrl(this.rootUrl, item.path);
                 }
-                this.menuMap[key] = {
+                if (!activeKey) {
+                    activeKey = `${ key }`;
+                }
+                this.urlMap[`${ key }`] = url;
+                this.menuMap.push({
                     type: 'menu',
-                    key: key,
-                    title: _.get(item, 'title', ''),
-                    url: url
-                };
+                    key: `${ key }`,
+                    title: _.get(item, 'title', '')
+                });
             } else {
-                this.menuMap[key] = {
+                const subKey = key;
+                if (!activeKey && _.isEmpty(item.list)) {
+                    openKey = `${ subKey }`;
+                }
+                this.menuMap.push({
                     type: 'subMenu',
-                    key: key,
+                    key: `${ key }`,
                     title: _.get(item, 'title', ''),
-                    list: _.map(item.list, (subItem) => {
+                    list: _.map(item.list, (subItem: any) => {
                         key++;
                         let url = item.rawUrl;
                         if (!url) {
-                            this.pathMap[item.path] = key;
-                            url = Utils.getFullUrl(this.rootUrl, item.path);
+                            this.pathMap[subItem.path] = {
+                                open: `${ subKey }`,
+                                active: `${ key }`
+                            };
+                            url = Utils.getFullUrl(this.rootUrl, subItem.path);
                         }
+                        if (!activeKey) {
+                            activeKey = `${ key }`;
+                        }
+                        this.urlMap[`${ key }`] = url;
                         return {
                             type: 'menu',
-                            key: key,
-                            title: _.get(subItem, 'title', ''),
-                            url: url
+                            key: `${ key }`,
+                            title: _.get(subItem, 'title', '')
                         };
                     })
-                };
+                });
             }
         });
+        openKey = openKey ? openKey : '';
+        activeKey = activeKey ? activeKey : '';
+        this.keyConfig = {
+            openKeys: [openKey],
+            activeKey: activeKey
+        };
+    }
+
+    // 获取文章内容
+    private getContent ():void {
+        const activeKey = this.state.activeKey;
+        if (activeKey === '') {
+            this.setState({
+                content: ''
+            });
+        } else {
+            const url = this.urlMap[activeKey];
+            const mdFetch = new MDFetch({
+                srcLink: url,
+                rootUrl: this.rootUrl
+            });
+            mdFetch.getMarkedValue(function (err: any, content: string) {
+                this.setState({
+                    content: content
+                });
+            }.bind(this));
+        }
+    }
+
+    private addClickHandle () {
+        this.itemClick = (params: any) => {
+            this.setState({
+                activeKey: params.key
+            }, () => {
+                this.getContent();
+            });
+        };
+
+        this.subMenuClick = (params: any) => {
+            const openKeys = this.state.openKeys;
+            if (_.includes(openKeys, params.key)) {
+                _.remove(openKeys, (key) => {
+                    return (params.key === key);
+                });
+            } else {
+                openKeys.push(params.key);
+            }
+            this.setState({
+                openKeys: openKeys
+            });
+        };
     }
 
     render () {
@@ -117,13 +201,15 @@ class Page extends React.Component {
                         style={{
                             height: '32px',
                             background: '#333',
-                            margin: '0 16px 16px'
+                            margin: '0 16px 32px'
                         }}
                     />
                     <Menu
                         theme='dark'
-                        defaultSelectedKeys={['1']}
+                        openKeys={ this.state.openKeys }
+                        selectedKeys={[this.state.activeKey]}
                         mode='inline'
+                        onClick={ this.itemClick }
                     >
                         {
                             this.menuMap.map((item: any) => {
@@ -133,7 +219,11 @@ class Page extends React.Component {
                                     );
                                 } else {
                                     return (
-                                        <SubMenu key={ item.key } title={ <span>item.title</span> }>
+                                        <SubMenu
+                                            key={ item.key }
+                                            title={ <span>item.title</span> }
+                                            onTitleClick={ this.subMenuClick }
+                                        >
                                             {
                                                 item.list.map((subItem: any) => {
                                                     return (
@@ -150,8 +240,8 @@ class Page extends React.Component {
                 </Sider>
                 <Layout style={{ background: '#fff' }}>
                     <Header style={{ padding: 0, background: '#fff' }} />
-                    <Content>
-                        
+                    <Content style={{ padding: '0 64px 32px 64px' }}>
+                        <div dangerouslySetInnerHTML={{ __html: this.state.content }} />
                     </Content>
                     <Footer style={{ textAlign: 'center' }}>
                         案例 footer 可以考虑使用参数配置
