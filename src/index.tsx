@@ -35,15 +35,15 @@ const bookConfig = {
             list: [
                 {
                     title: 'graphql base1',
-                    path: 'docs/base1.md'
+                    path: 'docs/1.graphql基础查询.md'
                 },
                 {
                     title: 'graphql base2',
-                    path: 'docs/base2.md'
+                    path: 'docs/2.graphql关联查询.md'
                 },
                 {
                     title: 'graphql base3',
-                    path: 'docs/base3.md'
+                    path: 'docs/3.graphql修改数据.md'
                 }
             ]
         }

@@ -27,6 +27,7 @@ interface Callback {
 interface MDFetchConfig {
     srcLink: string;    // 资源路径
     rootUrl?: string;    // 根路径
+    pathMap: any;        // 路径map
 };
 
 class MDFetch {
@@ -45,11 +46,19 @@ class MDFetch {
         this.renderer.link = function (href: string, title: string, text: string) {
             let resultHref = href;
             const titleConfig = title ? `title="${ title }"` : '';
+            const pathMap = config.pathMap;
             if (Utils.isFullUrl(href)) {
                 // 如果连接跳转为完整链接则直接跳转
-                return `<a href="${ resultHref }" ${ titleConfig }>${ text }</a>`
+                return `<a target="_blank" href="${ resultHref }" ${ titleConfig }>${ text }</a>`;
+            } else if (!pathMap[href]) {
+                // map 当中没有的话就跳转到拼接后的连接
+                resultHref = Utils.getFullUrl(rootUrl, href);
+                return `<a target="_blank" href="${ resultHref }" ${ titleConfig }>${ text }</a>`;
             } else {
-                return `<a href="#${ resultHref }" ${ titleConfig }>${ text }</a>`
+                // map 当中有的话则切换到相应的 content
+                return `
+                    <a path="${ href }" class="siteLink" href="#" ${ titleConfig }>${ text }</a>
+                `;
             }
         };
 

@@ -31,4 +31,6 @@ const config = {
 };
 ```
 
+比较后悔使用 ts 开发了，ts 开发真的很慢（开发效率为es6的1/3左右），相较于es6维护成本不一定低。
+
 [test](/www.hahha.com)

@@ -8,6 +8,7 @@
 import * as _ from 'lodash';
 import * as async from 'async';
 import * as React from 'react';
+import * as $ from 'jquery';
 
 import { Layout, Menu, Breadcrumb } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
@@ -60,17 +61,12 @@ class Page extends React.Component {
         });
     }
 
-    // 将必要参数暴露到全局
-    private initGlobal () {
-        // TODO 比较痛苦的部分
-    }
-
     // 按照配置获取基础根路径
     private getRootUrl ():string {
         let rootUrl = '';
         switch (this.type) {
             case 'github':
-                rootUrl = `https://raw.githubusercontent.com/${ this.username }/${ this.project }/${ this.branch }`;
+                rootUrl = `https://cdn.rawgit.com/${ this.username }/${ this.project }/${ this.branch }`;
                 break;
             default:
                 break;
@@ -91,7 +87,8 @@ class Page extends React.Component {
             if (_.isEmpty(item.list)) {
                 let url = item.rawUrl;
                 if (!url) {
-                    this.pathMap[item.path] = {
+                    const pathKey = /^\//.test(item.path) ? item.path : `/${ item.path }`;
+                    this.pathMap[pathKey] = {
                         active: `${ key }`
                     };
                     url = Utils.getFullUrl(this.rootUrl, item.path);
@@ -118,7 +115,8 @@ class Page extends React.Component {
                         key++;
                         let url = item.rawUrl;
                         if (!url) {
-                            this.pathMap[subItem.path] = {
+                            const pathKey = /^\//.test(subItem.path) ? subItem.path : `/${ subItem.path }`;
+                            this.pathMap[pathKey] = {
                                 open: `${ subKey }`,
                                 active: `${ key }`
                             };
@@ -137,6 +135,7 @@ class Page extends React.Component {
                 });
             }
         });
+        console.log(this.pathMap);
         openKey = openKey ? openKey : '';
         activeKey = activeKey ? activeKey : '';
         this.keyConfig = {
@@ -148,6 +147,7 @@ class Page extends React.Component {
     // 获取文章内容
     private getContent ():void {
         const activeKey = this.state.activeKey;
+        const self = this;
         if (activeKey === '') {
             this.setState({
                 content: ''
@@ -156,11 +156,28 @@ class Page extends React.Component {
             const url = this.urlMap[activeKey];
             const mdFetch = new MDFetch({
                 srcLink: url,
-                rootUrl: this.rootUrl
+                rootUrl: this.rootUrl,
+                pathMap: this.pathMap
             });
             mdFetch.getMarkedValue(function (err: any, content: string) {
                 this.setState({
                     content: content
+                }, () => {
+                    $('.siteLink').click(function () {
+                        const path = $(this).attr('path');
+                        const active = self.pathMap[path].active;
+                        const open = self.pathMap[path].open;
+                        const openKeys = self.state.openKeys;
+                        if (open && !_.includes(self.state.openKeys, open)) {
+                            openKeys.push(open);
+                        }
+                        self.setState({
+                            openKeys: openKeys,
+                            activeKey: active
+                        }, () => {
+                            self.getContent();
+                        });
+                    });
                 });
             }.bind(this));
         }
