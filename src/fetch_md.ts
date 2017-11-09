@@ -26,8 +26,10 @@ interface Callback {
 
 interface MDFetchConfig {
     srcLink: string;    // 资源路径
-    rootUrl?: string;    // 根路径
-    pathMap: any;        // 路径map
+    rootUrl: string;        // 根路径
+    dirUrl: string;            // 目录路径
+    fileUrl: string;            // 文件路径
+    pathMap: any;            // 路径map
 };
 
 class MDFetch {
@@ -52,7 +54,11 @@ class MDFetch {
                 return `<a target="_blank" href="${ resultHref }" ${ titleConfig }>${ text }</a>`;
             } else if (!pathMap[href]) {
                 // map 当中没有的话就跳转到拼接后的连接
-                resultHref = Utils.getFullUrl(rootUrl, href);
+                if (/\./.test(href)) {
+                    resultHref = Utils.getFullUrl(config.fileUrl, href);
+                } else {
+                    resultHref = Utils.getFullUrl(config.dirUrl, href);
+                }
                 return `<a target="_blank" href="${ resultHref }" ${ titleConfig }>${ text }</a>`;
             } else {
                 // map 当中有的话则切换到相应的 content

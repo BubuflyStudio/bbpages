@@ -32,6 +32,8 @@ class Page extends React.Component {
     private subMenuClick: (params: any) => void;
 
     private rootUrl: string;
+    private fileUrl: string;
+    private dirUrl: string;
     private keyConfig: any = {
         openKeys: [''],
         activeKey: ''
@@ -50,7 +52,7 @@ class Page extends React.Component {
         this.project = props.project;
         this.list = props.list || [];
 
-        this.rootUrl = this.getRootUrl();
+        this.initUrl();
         this.initMenuMap();
         this.addClickHandle();
     }
@@ -62,16 +64,16 @@ class Page extends React.Component {
     }
 
     // 按照配置获取基础根路径
-    private getRootUrl ():string {
-        let rootUrl = '';
+    private initUrl ():void {
         switch (this.type) {
             case 'github':
-                rootUrl = `https://cdn.rawgit.com/${ this.username }/${ this.project }/${ this.branch }`;
+                this.rootUrl = `https://cdn.rawgit.com/${ this.username }/${ this.project }/${ this.branch }`;
+                this.fileUrl = `https://github.com/${ this.username }/${ this.project }/blob/${ this.branch }`;
+                this.dirUrl = `https://github.com/${ this.username }/${ this.project }/tree/${ this.branch }`;
                 break;
             default:
                 break;
         }
-        return rootUrl;
     }
 
     // 初始化目录菜单配置
@@ -135,7 +137,6 @@ class Page extends React.Component {
                 });
             }
         });
-        console.log(this.pathMap);
         openKey = openKey ? openKey : '';
         activeKey = activeKey ? activeKey : '';
         this.keyConfig = {
@@ -157,6 +158,8 @@ class Page extends React.Component {
             const mdFetch = new MDFetch({
                 srcLink: url,
                 rootUrl: this.rootUrl,
+                fileUrl: this.fileUrl,
+                dirUrl: this.dirUrl,
                 pathMap: this.pathMap
             });
             mdFetch.getMarkedValue(function (err: any, content: string) {
@@ -232,19 +235,19 @@ class Page extends React.Component {
                             this.menuMap.map((item: any) => {
                                 if (item.type === 'menu') {
                                     return (
-                                        <Menu.Item key={ item.key }><span>item.title</span></Menu.Item>
+                                        <Menu.Item key={ item.key }><span>{ item.title }</span></Menu.Item>
                                     );
                                 } else {
                                     return (
                                         <SubMenu
                                             key={ item.key }
-                                            title={ <span>item.title</span> }
+                                            title={ <span>{ item.title }</span> }
                                             onTitleClick={ this.subMenuClick }
                                         >
                                             {
                                                 item.list.map((subItem: any) => {
                                                     return (
-                                                        <Menu.Item key={ subItem.key }><span>subItem.title</span></Menu.Item>
+                                                        <Menu.Item key={ subItem.key }><span>{ subItem.title }</span></Menu.Item>
                                                     );
                                                 })
                                             }

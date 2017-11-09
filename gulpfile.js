@@ -23,7 +23,7 @@ const baseLibsPackConfig = {
         { src: 'react-dom', expose: 'react-dom' },
         { src: 'marked', expose: 'marked' },
         { src: 'jquery', expose: 'jquery' },
-        { src: 'highlight.js', expose: 'highlight.js' },
+        { src: './src/hljs.js', expose: 'highlight.js' },
         { src: './src/antd.js', expose: 'antd' },
         { src: './src/md_styles', expose: 'md-styles' }
     ],
@@ -43,8 +43,8 @@ const pagesPackConfig = {
 // 基础包编译任务
 gulp.task('libs', (callback) => {
     const webpackConfig = BBConfig.baseLibs({
-        uglify: false,
-        sourceMap: true,
+        uglify: true,
+        sourceMap: false,
         cacheDir: 'libs'
     });
     webpack2b.libsPack(baseLibsPackConfig, webpackConfig, callback);
