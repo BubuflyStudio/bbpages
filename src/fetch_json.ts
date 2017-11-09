@@ -5,9 +5,31 @@
  * @date 17/10/26
  */
 
+import { default as Utils } from './utils';
+
+interface JsonFetchConfig {
+    srcLink: string;    // 资源路径
+};
+
+interface Callback {
+    (err?: any, value?: any): any;
+}
 
 class JsonFetch {
+    private srcLink:string;
 
+    constructor (config: JsonFetchConfig) {
+        this.srcLink = config.srcLink;
+    }
+
+    public getJsonValue (callback: Callback): void {
+        Utils.getSource(this.srcLink, (err, jsonList) => {
+            if (err) {
+                return callback(err);
+            }
+            return callback(null, JSON.parse(jsonList));
+        });
+    }
 }
 
 export default JsonFetch;

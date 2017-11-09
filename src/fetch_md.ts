@@ -26,10 +26,10 @@ interface Callback {
 
 interface MDFetchConfig {
     srcLink: string;    // 资源路径
-    rootUrl: string;        // 根路径
-    dirUrl: string;            // 目录路径
-    fileUrl: string;            // 文件路径
-    pathMap: any;            // 路径map
+    rootUrl: string;    // 根路径
+    dirUrl: string;     // 目录路径
+    fileUrl: string;    // 文件路径
+    pathMap: any;       // 路径map
 };
 
 class MDFetch {

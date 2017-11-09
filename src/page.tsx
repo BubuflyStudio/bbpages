@@ -23,6 +23,8 @@ class Page extends React.Component {
     private branch: string;
     private username: string;
     private project: string;
+    private name: string;
+    private footer: string;
     private list: any;
 
     private menuMap: any;
@@ -50,6 +52,8 @@ class Page extends React.Component {
         this.branch = props.branch || 'master';
         this.username = props.username;
         this.project = props.project;
+        this.name = props.name;
+        this.footer = props.footer;
         this.list = props.list || [];
 
         this.initUrl();
@@ -219,11 +223,17 @@ class Page extends React.Component {
                 >
                     <div
                         style={{
-                            height: '32px',
-                            background: '#333',
-                            margin: '0 16px 32px'
+                            height: '64px'
                         }}
-                    />
+                    >
+                        <p style={{
+                            fontSize: '16px',
+                            fontWeight: 600,
+                            textAlign: 'left',
+                            color: '#fff',
+                            padding: '16px 0 0 24px'
+                        }}>{ this.name }</p>
+                    </div>
                     <Menu
                         theme='dark'
                         openKeys={ this.state.openKeys }
@@ -264,7 +274,7 @@ class Page extends React.Component {
                         <div dangerouslySetInnerHTML={{ __html: this.state.content }} />
                     </Content>
                     <Footer style={{ textAlign: 'center' }}>
-                        案例 footer 可以考虑使用参数配置
+                        { this.footer }
                     </Footer>
                 </Layout>
             </Layout>

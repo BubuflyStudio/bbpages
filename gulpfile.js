@@ -10,6 +10,8 @@ const _ = require('lodash');
 const async = require('async');
 const del = require('del');
 const gulp = require('gulp');
+const concat = require('gulp-concat');
+const cssnano = require('gulp-cssnano');
 const webpack2b = require('webpack-2b');
 
 const BBConfig = require('./bbconfig');
@@ -69,5 +71,56 @@ gulp.task('del', (callback) => {
         '.cache', 'dist/libs/*', 'dist/pages/**'
     ]).then(() => {
         return callback();
+    });
+});
+
+// 以下为发布时的操作 --------------------------------------
+gulp.task('pro-libs', (callback) => {
+    const webpackConfig = BBConfig.baseLibs({
+        uglify: true,
+        sourceMap: false,
+        cacheDir: 'pro-libs'
+    });
+    webpack2b.libsPack(
+        _.defaults({ savePath: './release/base_libs.js' }, baseLibsPackConfig),
+        webpackConfig,
+        callback
+    );
+});
+
+gulp.task('pro-pages', (callback) => {
+    const webpackConfig = BBConfig.cusPages({
+        uglify: true,
+        sourceMap: false,
+        cacheDir: 'pro-pages'
+    });
+    webpack2b.pagesPack(
+        _.defaults({ destDir: './release' }, pagesPackConfig),
+        webpackConfig,
+        callback
+    );
+});
+
+gulp.task('pro', ['pro-libs', 'pro-pages'], (callback) => {
+    const jsStream = gulp.src(['./release/base_libs.js', './release/index.js'])
+        .pipe(concat('bbpages.min.js'))
+        .pipe(gulp.dest('./release'));
+
+    const cssStream = gulp.src(['./release/base_libs.css'])
+        .pipe(concat('bbpages.min.css'))
+        .pipe(cssnano())
+        .pipe(gulp.dest('./release'));
+
+    const streams = [jsStream, cssStream];
+    async.each(streams, (stream, callback) => {
+        stream.on('end', () => {
+            return callback();
+        });
+    }, () => {
+        del([
+            './release/base_libs.js',
+            './release/base_libs.css',
+            './release/index.js'
+        ]).then(() => callback());
     });
 });

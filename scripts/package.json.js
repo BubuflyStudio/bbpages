@@ -51,6 +51,9 @@ const packageConfig = {
         'gulp': '~3.9.1',
         'del': '^3.0.0',
 
+        'gulp-concat': '^2.6.1',
+        'gulp-cssnano': '^2.1.2',
+
         // typescript 依赖的包
         'typescript': '^2.5.3',
         'ts-loader': '^3.0.3',
