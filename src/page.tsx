@@ -14,8 +14,8 @@ import { Layout, Menu, Breadcrumb } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
-import { default as Utils } from './utils';
-import { default as MDFetch } from './fetch_md';
+import { default as Utils } from './libs/utils';
+import { default as MDFetch } from './libs/fetch_md';
 
 // TODO 初始参数的规范化
 class Page extends React.Component {
@@ -23,7 +23,7 @@ class Page extends React.Component {
     private branch: string;
     private username: string;
     private project: string;
-    private name: string;
+    private logo: any;
     private footer: string;
     private list: any;
 
@@ -52,9 +52,22 @@ class Page extends React.Component {
         this.branch = props.branch || 'master';
         this.username = props.username;
         this.project = props.project;
-        this.name = props.name;
         this.footer = props.footer;
         this.list = props.list || [];
+
+        if (props.logo) {
+            this.logo = (<div dangerouslySetInnerHTML={{ __html: props.logo }}></div>);
+        } else {
+            this.logo = (
+                <p style={{
+                    fontSize: '16px',
+                    fontWeight: 600,
+                    textAlign: 'left',
+                    color: '#fff',
+                    padding: '16px 0 0 24px'
+                }}>{ this.project }</p>
+            );
+        }
 
         this.initUrl();
         this.initMenuMap();
@@ -221,19 +234,7 @@ class Page extends React.Component {
                     breakpoint='lg'
                     collapsedWidth='0'
                 >
-                    <div
-                        style={{
-                            height: '64px'
-                        }}
-                    >
-                        <p style={{
-                            fontSize: '16px',
-                            fontWeight: 600,
-                            textAlign: 'left',
-                            color: '#fff',
-                            padding: '16px 0 0 24px'
-                        }}>{ this.name }</p>
-                    </div>
+                    <div style={{ height: '64px' }}>{ this.logo }</div>
                     <Menu
                         theme='dark'
                         openKeys={ this.state.openKeys }
@@ -273,8 +274,11 @@ class Page extends React.Component {
                     <Content style={{ padding: '0 64px 32px 64px' }}>
                         <div dangerouslySetInnerHTML={{ __html: this.state.content }} />
                     </Content>
-                    <Footer style={{ textAlign: 'center' }}>
-                        { this.footer }
+                    <Footer>
+                        <div
+                            style={{ textAlign: 'center' }}
+                            dangerouslySetInnerHTML={{ __html: this.footer }}
+                        />
                     </Footer>
                 </Layout>
             </Layout>

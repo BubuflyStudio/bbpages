@@ -10,26 +10,25 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as $ from 'jquery';
 
-import { default as JsonFetch } from './fetch_json';
+import { default as JsonFetch } from './libs/fetch_json';
 import { default as Page } from './page';
-import { default as Utils } from './utils';
+import { default as Utils } from './libs/utils';
 
 (window as any).BBPages = (config: any) => {
     $(`<div id='content' />`).appendTo($('body'));
-    const listLink = config.listLink;
-    if (listLink) {
+    const configLink = config.configLink;
+    if (configLink) {
         // 从远端配置文件中获取目录配置
-        let srcLink = listLink;
-        if (!Utils.isFullUrl(listLink)) {
+        let srcLink = configLink;
+        if (!Utils.isFullUrl(configLink)) {
             srcLink = `https://cdn.rawgit.com/${ config.username }/${ config.project }/${ config.branch }`;
-            srcLink = Utils.getFullUrl(srcLink, listLink);
+            srcLink = Utils.getFullUrl(srcLink, configLink);
         }
         const jsonFetch = new JsonFetch({
             srcLink: srcLink
         });
-        jsonFetch.getJsonValue((err, list) => {
-            config.list = list;
-            ReactDOM.render(<Page { ...config } />, document.querySelector('#content'));
+        jsonFetch.getJsonValue((err, remoteConfig) => {
+            ReactDOM.render(<Page { ..._.defaults(remoteConfig, config) } />, document.querySelector('#content'));
         });
     } else {
         // 直接使用已有配置

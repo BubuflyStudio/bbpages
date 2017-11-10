@@ -23,11 +23,11 @@ class JsonFetch {
     }
 
     public getJsonValue (callback: Callback): void {
-        Utils.getSource(this.srcLink, (err, jsonList) => {
+        Utils.getSource(this.srcLink, (err, config) => {
             if (err) {
                 return callback(err);
             }
-            return callback(null, JSON.parse(jsonList));
+            return callback(null, config);
         });
     }
 }
