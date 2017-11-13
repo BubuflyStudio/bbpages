@@ -62,7 +62,7 @@ css 文件：`https://cdn.rawgit.com/BubuflyStudio/bbpages/master/release/bbpage
 js 文件：`https://cdn.rawgit.com/BubuflyStudio/bbpages/master/release/bbpages.min.js`  
 然后在 `html` 页面中做初始化配置即可，该 `html` 文件可以直接在本地打开或是部署到静态服务上（随你喜欢）。  
 
-预期效果如下：  
+预期效果如下，参考地址（[graphql-learn](http://2bflydocs.duapp.com/graphql)）：  
 ![images/ex1.png](/images/ex1.png)
 
 ### 进阶使用
