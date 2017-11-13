@@ -82,9 +82,10 @@ class Page extends React.Component {
 
     // 按照配置获取基础根路径
     private initUrl ():void {
+        const rawBaseUrl = Utils.getRawBaseUrl(this.type);
         switch (this.type) {
             case 'github':
-                this.rootUrl = `https://cdn.rawgit.com/${ this.username }/${ this.project }/${ this.branch }`;
+                this.rootUrl = `${ rawBaseUrl }/${ this.username }/${ this.project }/${ this.branch }`;
                 this.fileUrl = `https://github.com/${ this.username }/${ this.project }/blob/${ this.branch }`;
                 this.dirUrl = `https://github.com/${ this.username }/${ this.project }/tree/${ this.branch }`;
                 break;

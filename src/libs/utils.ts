@@ -16,6 +16,7 @@ interface UtilsType {
     getSource: (src: string, callback: Callback) => void;
     isFullUrl: (url: string) => boolean;
     getFullUrl: (rootUrl: string, path: string) => string;
+    getRawBaseUrl: (type: string) => string;
 };
 
 const Utils: UtilsType = {
@@ -58,6 +59,16 @@ const Utils: UtilsType = {
             return `${ rootUrl }${ path }`;
         }
         return `${ rootUrl }/${ path }`;
+    },
+
+    /**
+     * 获取资源的原始路径
+     * @param {String} rootUrl - 相应仓库的 raw 根路径
+     * @return {String} - 相应的路径
+     */
+    getRawBaseUrl: (type) => {
+        return 'https://raw.githubusercontent.com';
+        // return 'https://cdn.rawgit.com';
     }
 };
 

@@ -21,7 +21,7 @@ import { default as Utils } from './libs/utils';
         // 从远端配置文件中获取目录配置
         let srcLink = configLink;
         if (!Utils.isFullUrl(configLink)) {
-            srcLink = `https://cdn.rawgit.com/${ config.username }/${ config.project }/${ config.branch }`;
+            srcLink = `${ Utils.getRawBaseUrl(config.type) }/${ config.username }/${ config.project }/${ config.branch }`;
             srcLink = Utils.getFullUrl(srcLink, configLink);
         }
         const jsonFetch = new JsonFetch({
