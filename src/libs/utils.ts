@@ -67,8 +67,8 @@ const Utils: UtilsType = {
      * @return {String} - 相应的路径
      */
     getRawBaseUrl: (type) => {
-        return 'https://raw.githubusercontent.com';
-        // return 'https://cdn.rawgit.com';
+        // return 'https://raw.githubusercontent.com';
+        return 'https://cdn.rawgit.com';
     }
 };
 

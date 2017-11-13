@@ -1,6 +1,7 @@
 # bbpages
-基于 `github` 存储的文档型网站工具，相比于其他文档工具 `bbpages` 的使用比较简单。但需要给github
-添加翻墙规则。所以这里仅用于 `Bubufly Studio` 自用吧。
+基于 `github` 存储的文档型网站工具，相比于其他文档工具 `bbpages` 的使用比较简单。但需要给 
+`rawgit.com` 添加翻墙规则（如果无法访问 [rawgit](https://rawgit)，则可以放弃使用该框架了）。
+所以这里目前还是 `Bubufly Studio` 自用吧。
 
 ## 使用指南
 ### 基础使用
