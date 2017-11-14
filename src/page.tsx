@@ -16,6 +16,7 @@ const SubMenu = Menu.SubMenu;
 
 import { default as Utils } from './libs/utils';
 import { default as MDFetch } from './libs/fetch_md';
+import * as style from './style.less';
 
 // TODO 初始参数的规范化
 class Page extends React.Component {
@@ -272,7 +273,7 @@ class Page extends React.Component {
                 </Sider>
                 <Layout style={{ background: '#fff' }}>
                     <Header style={{ padding: 0, background: '#fff' }} />
-                    <Content style={{ padding: '0 64px 32px 64px' }}>
+                    <Content className={ style.content }>
                         <div dangerouslySetInnerHTML={{ __html: this.state.content }} />
                     </Content>
                     <Footer>

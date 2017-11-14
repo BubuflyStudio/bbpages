@@ -96,7 +96,7 @@ gulp.task('pro', ['pro-libs', 'pro-pages'], (callback) => {
         .pipe(concat('bbpages.min.js'))
         .pipe(gulp.dest('./release'));
 
-    const cssStream = gulp.src(['./release/base_libs.css'])
+    const cssStream = gulp.src(['./release/base_libs.css', './release/index.css'])
         .pipe(concat('bbpages.min.css'))
         .pipe(cssnano())
         .pipe(gulp.dest('./release'));
@@ -110,7 +110,8 @@ gulp.task('pro', ['pro-libs', 'pro-pages'], (callback) => {
         del([
             './release/base_libs.js',
             './release/base_libs.css',
-            './release/index.js'
+            './release/index.js',
+            './release/index.css'
         ]).then(() => callback());
     });
 });
