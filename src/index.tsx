@@ -16,6 +16,10 @@ import { default as Utils } from './libs/utils';
 
 (window as any).BBPages = (config: any) => {
     $(`<div id='content' />`).appendTo($('body'));
+    _.defaults(config, {
+        type: 'github',
+        branch: 'master'
+    });
     const configLink = config.configLink;
     if (configLink) {
         // 从远端配置文件中获取目录配置
