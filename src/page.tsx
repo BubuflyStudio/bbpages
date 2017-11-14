@@ -10,7 +10,7 @@ import * as async from 'async';
 import * as React from 'react';
 import * as $ from 'jquery';
 
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 

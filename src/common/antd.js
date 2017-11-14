@@ -12,9 +12,6 @@ import 'antd/lib/layout/style';
 import Menu from 'antd/lib/menu';
 import 'antd/lib/menu/style';
 
-import Breadcrumb from 'antd/lib/breadcrumb';
-import 'antd/lib/breadcrumb/style';
-
 export default {
-    Layout, Menu, Breadcrumb
+    Layout, Menu
 };
