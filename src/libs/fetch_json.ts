@@ -27,6 +27,9 @@ class JsonFetch {
             if (err) {
                 return callback(err);
             }
+            if (typeof config === 'string') {
+                return callback(null, JSON.parse(config));
+            }
             return callback(null, config);
         });
     }

@@ -38,7 +38,7 @@ const pagesPackConfig = {
     pages: [
         { name: 'index', src: ['./src/index.tsx'] }
     ],
-    destDir: './dist/pages',
+    destDir: './dist',
     externals: baseLibsExternals
 };
 
@@ -63,16 +63,6 @@ gulp.task('pages', (callback) => {
 });
 
 gulp.task('dev', ['libs', 'pages']);
-
-// 清理工程冗余文件
-gulp.task('del', (callback) => {
-    del([
-        'package.json', 'tsconfig.json',
-        '.cache', 'dist/libs/*', 'dist/pages/**'
-    ]).then(() => {
-        return callback();
-    });
-});
 
 // 以下为发布时的操作 --------------------------------------
 gulp.task('pro-libs', (callback) => {
