@@ -15,6 +15,16 @@ import { default as Page } from './page';
 import { default as Utils } from './libs/utils';
 
 (window as any).BBPages = (config: any) => {
+    // viewport 的 meta 添加
+    const viewportMeta = $(`meta[name='viewport']`);
+    const metaContent = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no";
+    if (viewportMeta.length === 0) {
+        $('head').append(`<meta name="viewport" content="${ metaContent }">`);
+    } else {
+        viewportMeta.attr('content', metaContent);
+    }
+
+    // 渲染主体
     $(`<div id='content' />`).appendTo($('body'));
     _.defaults(config, {
         type: 'github',
